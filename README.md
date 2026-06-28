@@ -15,8 +15,8 @@ This helps interns learn full-stack architecture while creating something useful
 ## Tech Stack
 
 - **Frontend:** React + Vite + TypeScript
-- **Backend:** Node.js + Express + TypeScript (coming soon)
-- **Database:** Supabase PostgreSQL (coming soon)
+- **Backend:** Node.js + Express + TypeScript 
+- **Database:** Supabase PostgreSQL 
 
 ## How to Run
 
@@ -52,9 +52,8 @@ http://localhost:5173
 - View knowledge notes
 - Note cards with title and content
 - Responsive design
-
-## Coming Soon
-
+  
+## Features We have to build 
 - Create, edit, and delete notes
 - Search functionality
 - Categories and tags

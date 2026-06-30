@@ -30,7 +30,7 @@ export default function App() {
                 <Route index element={<FrontendPage />} />
                 <Route path="frontend" element={<FrontendPage />} />
                 <Route path="backend" element={<BackendPage />} />
-                <Route path="other" element={<OtherPage />} />
+                <Route path="other" element={<OtherPage/>} />
                 <Route path="journal" element={<Journal />} />
               </Routes>
             </>

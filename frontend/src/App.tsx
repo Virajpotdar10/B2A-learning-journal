@@ -15,10 +15,15 @@ import OtherPage from "./pages/OtherPage";
 import Login from "./pages/login";
 import Register from "./pages/Register";
 import Journal from "./pages/Journal";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
   // 1. Bring in the Auth0 hook to check the user's status
-  const { isAuthenticated, isLoading, user } = useAuth0();
+  const { isAuthenticated, isLoading, user, error, loginWithRedirect, logout } = useAuth0();
+
+  const handleLogout = () => {
+    logout({ logoutParams: { returnTo: window.location.origin } });
+  };
 
   // 2. Requirement 8: Create OAuth user profile in Supabase when user authenticates via Google
   useEffect(() => {
@@ -113,6 +118,7 @@ export default function App() {
             isAuthenticated ? <Navigate to="/journal" replace /> : <Register />
           }
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Main website pages WITH Navbar */}
         <Route

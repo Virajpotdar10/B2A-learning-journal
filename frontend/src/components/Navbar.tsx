@@ -1,20 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { clearAuthUser, getAuthUser } from '../utils/auth';
+import { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function Navbar() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+  const { isAuthenticated, user, logout } = useAuth0();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    setUser(getAuthUser());
-  }, []);
-
   const handleLogout = () => {
-    clearAuthUser();
-    setUser(null);
-    navigate('/login');
+    logout({ logoutParams: { returnTo: window.location.origin } });
   };
 
   const toggleMobileMenu = () => {
@@ -134,22 +128,25 @@ function Navbar() {
           >
             Other
           </Link>
-          {user ? (
-            <button
-              onClick={handleLogout}
-              style={{
-                padding: '0.55rem 1.2rem',
-                background: 'white',
-                color: '#ed771d',
-                border: 'none',
-                borderRadius: '8px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}
-            >
-              Logout
-            </button>
+          {isAuthenticated ? (
+            <>
+              <span style={{ color: 'white', fontWeight: 'bold' }}>{user?.name || user?.email}</span>
+              <button
+                onClick={handleLogout}
+                style={{
+                  padding: '0.55rem 1.2rem',
+                  background: 'white',
+                  color: '#ed771d',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <Link 
               to="/login"
@@ -277,7 +274,7 @@ function Navbar() {
         >
           Other
         </Link>
-        {user ? (
+        {isAuthenticated ? (
           <button
             onClick={() => {
               handleLogout();

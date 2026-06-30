@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import FrontendPage from './pages/FrontendPage';
 import BackendPage from './pages/BackendPage';
 import Login from './pages/login';
@@ -37,26 +38,18 @@ export default function App() {
         {/* Main website pages with Navbar */}
 
         <Route
-
           path="/*"
-
           element={
-
             <>
-
               <Navbar />
-
               <Routes>
-                <Route index element={<FrontendPage />} />
-                <Route path="frontend" element={<FrontendPage />} />
-                <Route path="backend" element={<BackendPage />} />
-                <Route path="journal" element={<Journal />} />
+                <Route index element={<ProtectedRoute><FrontendPage /></ProtectedRoute>} />
+                <Route path="frontend" element={<ProtectedRoute><FrontendPage /></ProtectedRoute>} />
+                <Route path="backend" element={<ProtectedRoute><BackendPage /></ProtectedRoute>} />
+                <Route path="journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
               </Routes>
-
             </>
-
           }
-
         />
 
 

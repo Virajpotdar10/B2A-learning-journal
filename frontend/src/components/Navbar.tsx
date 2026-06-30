@@ -128,9 +128,9 @@ function Navbar() {
           >
             Other
           </Link>
-          {isAuthenticated ? (
+          {user ? (
             <>
-              <span style={{ color: 'white', fontWeight: 'bold' }}>{user?.name || user?.email}</span>
+              <span style={{ color: 'white', fontWeight: 'bold' }}>{user.username || user.email}</span>
               <button
                 onClick={handleLogout}
                 style={{

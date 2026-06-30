@@ -48,26 +48,56 @@ export default function Journal() {
           }}>
             Keep your learning notes organized by topic, then click a category to save new entries for frontend, backend, or other topics.
           </p>
-          <button
-            type="button"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '1rem 2rem',
-              borderRadius: '999px',
-              border: 'none',
-              background: 'linear-gradient(135deg, #fb8c00 0%, #fdd835 100%)',
-              color: 'white',
-              fontSize: '1.1rem',
-              fontWeight: '700',
-              boxShadow: '0 14px 30px rgba(251, 140, 0, 0.18)',
-              cursor: 'default',
-              marginBottom: '2.5rem'
-            }}
-          >
-            Welcome
-          </button>
+          
+          {/* Button Container to keep them nicely spaced */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '2.5rem' }}>
+            <button
+              type="button"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '1rem 2rem',
+                borderRadius: '999px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #fb8c00 0%, #fdd835 100%)',
+                color: 'white',
+                fontSize: '1.1rem',
+                fontWeight: '700',
+                boxShadow: '0 14px 30px rgba(251, 140, 0, 0.18)',
+                cursor: 'default',
+              }}
+            >
+              Welcome
+            </button>
+
+            {/* The New Logout Button that fixes the TS6133 Error */}
+            <button
+              onClick={handleLogout}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '1rem 2rem',
+                borderRadius: '999px',
+                border: '2px solid #ffebee',
+                background: 'white',
+                color: '#d32f2f',
+                fontSize: '1.1rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = '#ffebee';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = 'white';
+              }}
+            >
+              Logout
+            </button>
+          </div>
 
           <div style={{
             display: 'grid',

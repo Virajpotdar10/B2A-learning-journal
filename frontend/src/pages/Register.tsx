@@ -69,10 +69,9 @@ export default function Register() {
       return;
     }
     setAdminLoading(true);
+    const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:4000";
     try {
-      const apiBaseUrl =
-        import.meta.env.VITE_API_URL || "http://localhost:4000";
-      const res = await fetch(`${apiBaseUrl}/api/auth/register`, {
+      const res = await fetch(`${apiUrl}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

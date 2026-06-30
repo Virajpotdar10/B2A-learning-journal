@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import FrontendPage from './pages/FrontendPage';
 import BackendPage from './pages/BackendPage';
+import OtherPage from './pages/OtherPage';
 import Login from './pages/login';
 import Register from './pages/Register';
 import Journal from './pages/Journal';

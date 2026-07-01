@@ -22,7 +22,6 @@ import {
 import {
   Group as GroupIcon,
   Share,
-  Settings,
   PersonAdd,
   ExitToApp,
 } from '@mui/icons-material';
@@ -359,7 +358,11 @@ export default function GroupDashboard() {
           <TextField
             fullWidth
             value={`${window.location.origin}/group/join/${group.invite_code}`}
-            InputProps={{ readOnly: true }}
+            slotProps={{
+              input: {
+                readOnly: true
+              }
+            }}
             sx={{ mb: 2 }}
           />
           <Button variant="contained" fullWidth onClick={handleShare}>

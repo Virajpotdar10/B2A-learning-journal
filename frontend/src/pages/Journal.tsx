@@ -123,7 +123,7 @@ export default function Journal() {
       
       const lastUpdated = catNotes.length > 0 
         ? catNotes.reduce((latest, note) => 
-            new Date(note.created_at) > new Date(latest.created_at) ? note : latest
+            (note.created_at && latest.created_at && new Date(note.created_at) > new Date(latest.created_at)) ? note : latest
           ).created_at
         : undefined;
 

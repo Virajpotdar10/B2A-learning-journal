@@ -9,12 +9,14 @@ export default function SearchSection() {
           fullWidth
           placeholder="Search topics, categories, or skills..."
           variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            },
           }}
           sx={{
             maxWidth: 600,

@@ -18,9 +18,6 @@ import {
 } from '@mui/material';
 import {
   Close,
-  Bookmark,
-  BookmarkBorder,
-  Edit,
   Delete,
   OpenInNew,
   Share,
@@ -45,6 +42,11 @@ interface TopicSidebarProps {
   onRefresh?: () => void;
 }
 
+interface TopicSidebarPropsExtended extends TopicSidebarProps {
+  openEditOnOpen?: boolean;
+  openDeleteOnOpen?: boolean;
+}
+
 export default function TopicSidebar({
   node,
   open,
@@ -52,7 +54,9 @@ export default function TopicSidebar({
   onUpdate,
   onDelete,
   onRefresh,
-}: TopicSidebarProps) {
+  openEditOnOpen,
+  openDeleteOnOpen,
+}: TopicSidebarPropsExtended) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const categoryColor = getCategoryColor(node.category);
@@ -76,6 +80,8 @@ export default function TopicSidebar({
       setEditTitle(node.title);
       setEditContent(node.content);
       setResources(meta.resources || []);
+      if (openEditOnOpen) setEditOpen(true);
+      if (openDeleteOnOpen) setDeleteOpen(true);
     }
   }, [open, node.id, node.title, node.content]);
 
@@ -290,34 +296,7 @@ export default function TopicSidebar({
         />
       </Box>
 
-      <Box
-        sx={{
-          p: 2,
-          borderTop: 1,
-          borderColor: 'divider',
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 1,
-        }}
-      >
-        <Button
-          variant="outlined"
-          startIcon={bookmarked ? <Bookmark /> : <BookmarkBorder />}
-          onClick={handleBookmark}
-        >
-          Bookmark
-        </Button>
-        {node.noteId && onUpdate && (
-          <Button variant="outlined" startIcon={<Edit />} onClick={() => setEditOpen(true)}>
-            Edit
-          </Button>
-        )}
-        {node.noteId && onDelete && (
-          <Button variant="outlined" color="error" startIcon={<Delete />} onClick={handleDelete}>
-            Delete
-          </Button>
-        )}
-      </Box>
+      {/* Action buttons moved to topic card — sidebar no longer renders Bookmark/Edit/Delete here */}
     </Box>
   );
 

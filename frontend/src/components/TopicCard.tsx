@@ -1,16 +1,15 @@
-import { Card, CardContent, Box, Typography, IconButton, Chip, Stack } from '@mui/material';
+import { Card, CardContent, Box, Typography, IconButton, Stack, Button } from '@mui/material';
 import {
   ExpandMore,
   ChevronRight,
   Bookmark,
   BookmarkBorder,
   CheckCircle,
-  AccessTime,
+  Edit,
+  Delete,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import ProgressRing from './ProgressRing';
-import DifficultyBadge from './DifficultyBadge';
-import StatusBadge from './StatusBadge';
 import { getCategoryColor } from '../data/categories';
 import type { RoadmapNode } from '../types';
 
@@ -20,6 +19,8 @@ interface TopicCardProps {
   onClick: () => void;
   onToggleExpand: () => void;
   onToggleBookmark: () => void;
+  onRequestEdit?: (id: string) => void;
+  onRequestDelete?: (id: string) => void;
 }
 
 export default function TopicCard({
@@ -28,6 +29,8 @@ export default function TopicCard({
   onClick,
   onToggleExpand,
   onToggleBookmark,
+  onRequestEdit,
+  onRequestDelete,
 }: TopicCardProps) {
   const categoryColor = getCategoryColor(node.category);
   const hasChildren = node.children.length > 0;
@@ -70,17 +73,48 @@ export default function TopicCard({
                 </Typography>
               </Stack>
 
-              <Stack direction="row" spacing={0.75} sx={{ mb: 1, flexWrap: 'wrap', gap: 0.75 }}>
-                <StatusBadge status={node.status} />
-                <DifficultyBadge difficulty={node.difficulty} />
-                <Chip
-                  icon={<AccessTime sx={{ fontSize: '14px !important' }} />}
-                  label={`${node.estimatedMinutes}m`}
+              {/* Action buttons under title */}
+              <Box sx={{ mt: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                <Button
                   size="small"
                   variant="outlined"
-                  sx={{ height: 24, fontSize: '0.7rem' }}
-                />
-              </Stack>
+                  startIcon={node.isBookmarked ? <Bookmark /> : <BookmarkBorder />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleBookmark();
+                  }}
+                >
+                  Bookmark
+                </Button>
+                {node.noteId && (
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<Edit />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onRequestEdit?.(node.id);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                )}
+                {node.noteId && (
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="error"
+                    startIcon={<Delete />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onRequestDelete?.(node.id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </Box>
+
             </Box>
 
             <Stack spacing={0.5} sx={{ alignItems: 'center' }}>

@@ -12,6 +12,8 @@ interface RoadmapNodeComponentProps {
   onSelect: (node: RoadmapNode) => void;
   onToggleExpand: (id: string) => void;
   onToggleBookmark: (id: string) => void;
+  onRequestEdit?: (id: string) => void;
+  onRequestDelete?: (id: string) => void;
   depth?: number;
 }
 
@@ -22,6 +24,8 @@ export default function RoadmapNodeComponent({
   onSelect,
   onToggleExpand,
   onToggleBookmark,
+  onRequestEdit,
+  onRequestDelete,
   depth = 0,
 }: RoadmapNodeComponentProps) {
   const color = getCategoryColor(node.category);
@@ -47,6 +51,8 @@ export default function RoadmapNodeComponent({
         onClick={() => onSelect(node)}
         onToggleExpand={() => onToggleExpand(node.id)}
         onToggleBookmark={() => onToggleBookmark(node.id)}
+        onRequestEdit={(id) => onRequestEdit?.(id)}
+        onRequestDelete={(id) => onRequestDelete?.(id)}
       />
 
       {hasChildren && node.isExpanded && (
@@ -81,6 +87,8 @@ export default function RoadmapNodeComponent({
                     onSelect={onSelect}
                     onToggleExpand={onToggleExpand}
                     onToggleBookmark={onToggleBookmark}
+                    onRequestEdit={onRequestEdit}
+                    onRequestDelete={onRequestDelete}
                     depth={depth + 1}
                   />
                 </motion.div>

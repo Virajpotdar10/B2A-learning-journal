@@ -10,6 +10,8 @@ interface RoadmapTreeProps {
   onSelect: (node: RoadmapNode) => void;
   onTreeChange: (nodes: RoadmapNode[]) => void;
   onToggleBookmark: (id: string) => void;
+  onRequestEdit?: (id: string) => void;
+  onRequestDelete?: (id: string) => void;
 }
 
 function updateNodeInTree(nodes: RoadmapNode[], id: string, updater: (n: RoadmapNode) => RoadmapNode): RoadmapNode[] {
@@ -29,6 +31,8 @@ export default function RoadmapTree({
   onSelect,
   onTreeChange,
   onToggleBookmark,
+  onRequestEdit,
+  onRequestDelete,
 }: RoadmapTreeProps) {
   const handleToggleExpand = useCallback(
     (id: string) => {
@@ -89,6 +93,8 @@ export default function RoadmapTree({
           onSelect={onSelect}
           onToggleExpand={handleToggleExpand}
           onToggleBookmark={onToggleBookmark}
+          onRequestEdit={onRequestEdit}
+          onRequestDelete={onRequestDelete}
         />
       ))}
     </Box>

@@ -58,6 +58,8 @@ export default function RoadmapPage() {
   const [loading, setLoading] = useState(true);
   const [selectedNode, setSelectedNode] = useState<RoadmapNode | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openEditOnOpen, setOpenEditOnOpen] = useState(false);
+  const [openDeleteOnOpen, setOpenDeleteOnOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [filterAnchor, setFilterAnchor] = useState<null | HTMLElement>(null);
@@ -121,6 +123,26 @@ export default function RoadmapPage() {
     setSidebarOpen(false);
     setSelectedNode(null);
     setSearchParams({});
+    setOpenEditOnOpen(false);
+    setOpenDeleteOnOpen(false);
+  };
+
+  const handleRequestEdit = (id: string) => {
+    const node = findNodeById(treeData, id);
+    if (!node) return;
+    setSelectedNode(node);
+    setSidebarOpen(true);
+    setOpenEditOnOpen(true);
+    setOpenDeleteOnOpen(false);
+  };
+
+  const handleRequestDelete = (id: string) => {
+    const node = findNodeById(treeData, id);
+    if (!node) return;
+    setSelectedNode(node);
+    setSidebarOpen(true);
+    setOpenDeleteOnOpen(true);
+    setOpenEditOnOpen(false);
   };
 
   const handleToggleBookmark = (id: string) => {
@@ -224,7 +246,7 @@ export default function RoadmapPage() {
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={2}
-          sx={{ mb: 4, alignItems: { sm: 'center' } }}
+          sx={{ mb: 4, alignItems: { sm: 'center' }, justifyContent: 'space-between' }}
         >
           <TextField
             placeholder="Search topics..."
@@ -233,23 +255,25 @@ export default function RoadmapPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             sx={{ flex: 1, maxWidth: { sm: 400 } }}
           />
-          <Button
-            variant="outlined"
-            startIcon={<FilterList />}
-            onClick={(e) => setFilterAnchor(e.currentTarget)}
-          >
-            Filter
-            {statusFilter && (
-              <Chip label={statusFilter.replace('_', ' ')} size="small" sx={{ ml: 1, height: 20 }} />
-            )}
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => setShowAddForm((v) => !v)}
-          >
-            Add Topic
-          </Button>
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+            <Button
+              variant="outlined"
+              startIcon={<FilterList />}
+              onClick={(e) => setFilterAnchor(e.currentTarget)}
+            >
+              Filter
+              {statusFilter && (
+                <Chip label={statusFilter.replace('_', ' ')} size="small" sx={{ ml: 1, height: 20 }} />
+              )}
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => setShowAddForm((v) => !v)}
+            >
+              Add Topic
+            </Button>
+          </Stack>
         </Stack>
 
         <Menu anchorEl={filterAnchor} open={Boolean(filterAnchor)} onClose={() => setFilterAnchor(null)}>
@@ -302,6 +326,8 @@ export default function RoadmapPage() {
               onSelect={handleSelect}
               onTreeChange={setTreeData}
               onToggleBookmark={handleToggleBookmark}
+              onRequestEdit={handleRequestEdit}
+              onRequestDelete={handleRequestDelete}
             />
           </Box>
         </Box>
@@ -315,6 +341,8 @@ export default function RoadmapPage() {
           onUpdate={handleUpdate}
           onDelete={handleDelete}
           onRefresh={loadNotes}
+          openEditOnOpen={openEditOnOpen}
+          openDeleteOnOpen={openDeleteOnOpen}
         />
       )}
     </Box>

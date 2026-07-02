@@ -1,11 +1,12 @@
 import React from 'react';
 import { Handle, Position } from 'reactflow';
 import ProgressRing from './ProgressRing';
-import StatusBadge from './StatusBadge';
-import DifficultyBadge from './DifficultyBadge';
+import { Button } from '@mui/material';
+import { Bookmark, BookmarkBorder, Edit, Delete } from '@mui/icons-material';
 
 interface TopicNodeProps {
   data: {
+    id?: string;
     title: string;
     category: string;
     status?: string;
@@ -15,6 +16,10 @@ interface TopicNodeProps {
     isExpanded?: boolean;
     onToggleExpand?: () => void;
     onClick?: () => void;
+    onToggleBookmark?: () => void;
+    onRequestEdit?: (id?: string) => void;
+    onRequestDelete?: (id?: string) => void;
+    isBookmarked?: boolean;
   };
 }
 
@@ -116,10 +121,33 @@ const TopicNode: React.FC<TopicNodeProps> = ({ data }) => {
         {data.title}
       </div>
 
-      {/* Badges */}
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
-        <StatusBadge status={status as any} />
-        <DifficultyBadge difficulty={difficulty as any} />
+      {/* Action buttons */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={data.isBookmarked ? <Bookmark /> : <BookmarkBorder />}
+          onClick={(e) => { e.stopPropagation(); data.onToggleBookmark?.(); }}
+        >
+          Bookmark
+        </Button>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<Edit />}
+          onClick={(e) => { e.stopPropagation(); data.onRequestEdit?.(data.id); }}
+        >
+          Edit
+        </Button>
+        <Button
+          size="small"
+          variant="outlined"
+          color="error"
+          startIcon={<Delete />}
+          onClick={(e) => { e.stopPropagation(); data.onRequestDelete?.(data.id); }}
+        >
+          Delete
+        </Button>
       </div>
 
       {/* Expand/Collapse Button */}

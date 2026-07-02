@@ -1,5 +1,5 @@
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
-import { LoggerProvider, BatchLogRecordProcessor } from '@opentelemetry/sdk-logs';
+import { LoggerProvider, BatchLogRecordProcessor, Logger } from '@opentelemetry/sdk-logs';
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { Resource } from '@opentelemetry/resources';
@@ -17,11 +17,13 @@ const resource = new Resource({
   'deployment.environment': process.env.DEPLOYMENT_ENV || 'local',
 });
 
+let logger: Logger | null = null;
+
 // Setup Logging
 export function setupLogging() {
   if (!OTLP_ENDPOINT || !OTLP_TOKEN) {
     console.log('OTLP endpoint or token not configured, skipping logging setup');
-    return;
+    return null;
   }
 
   const loggerProvider = new LoggerProvider({ resource });
@@ -34,6 +36,7 @@ export function setupLogging() {
     }))
   );
 
+  logger = loggerProvider.getLogger('default');
   return loggerProvider;
 }
 
@@ -56,6 +59,18 @@ export function setupTracing() {
 
   tracerProvider.register();
   return tracerProvider;
+}
+
+// Export a simple logging function
+export function logToGrafana(level: 'info' | 'error' | 'warn', message: string, data?: any) {
+  if (logger) {
+    logger.emit({
+      severityNumber: level === 'error' ? 17 : level === 'warn' ? 13 : 9,
+      severityText: level,
+      body: message,
+      attributes: data || {},
+    });
+  }
 }
 
 // Initialize telemetry

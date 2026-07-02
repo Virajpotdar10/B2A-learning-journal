@@ -6,9 +6,13 @@ import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import { initializeTelemetry } from './telemetry';
 
 // 1. Load the secret keys from the .env file
 dotenv.config();
+
+// 2. Initialize OpenTelemetry for logging and tracing
+initializeTelemetry();
 
 const app = express();
 const PORT = 4000;
